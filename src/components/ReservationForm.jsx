@@ -27,6 +27,24 @@ class ReservationForm extends Component {
         }
     }
 
+    handleInput = (e, propertyName) => {
+        // this function needs two things: the event coming from the input and
+        // which property of this.state.reservation we should update
+
+        // if we're coming from the smoking checkbox, we should not use
+        // e.target.value, but instead e.target.checked (it will be true/false)
+
+        this.setState({
+            reservation: {
+                ...this.state.reservation,
+                // copying over phone, numberOfPeople, smoking etc.
+                [propertyName]: propertyName === 'smoking'
+                    ? e.target.checked
+                    : e.target.value, // for every field but the smoking
+            }
+        })
+    }
+
     render() {
         return (
             <div className="text-center">
@@ -38,14 +56,7 @@ class ReservationForm extends Component {
                             type="text"
                             placeholder="Insert your name"
                             value={this.state.reservation.name}
-                            onChange={(e) => {
-                                console.log('I stroke a key', e.target.value)
-                                this.setState({
-                                    reservation: {
-                                        name: e.target.value
-                                    }
-                                })
-                            }}
+                            onChange={(e) => this.handleInput(e, 'name')}
                         />
                     </Form.Group>
                     <Form.Group>
@@ -54,11 +65,16 @@ class ReservationForm extends Component {
                             type="number"
                             placeholder="Insert your phone"
                             value={this.state.reservation.phone}
+                            onChange={(e) => this.handleInput(e, 'phone')}
                         />
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>How many people?</Form.Label>
-                        <Form.Control as="select">
+                        <Form.Control
+                            as="select"
+                            value={this.state.reservation.numberOfPeople}
+                            onChange={(e) => this.handleInput(e, 'numberOfPeople')}
+                        >
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -70,15 +86,29 @@ class ReservationForm extends Component {
                         </Form.Control>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Check type="checkbox" label="Do you smoke?" />
+                        <Form.Check
+                            type="checkbox"
+                            label="Do you smoke?"
+                            checked={this.state.reservation.smoking}
+                            onChange={(e) => this.handleInput(e, 'smoking')}
+                        />
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>When?</Form.Label>
-                        <Form.Control type="datetime-local" />
+                        <Form.Control
+                            type="datetime-local"
+                            value={this.state.reservation.dateTime}
+                            onChange={(e) => this.handleInput(e, 'dateTime')}
+                        />
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Any special request?</Form.Label>
-                        <Form.Control as="textarea" rows={3} />
+                        <Form.Control
+                            as="textarea"
+                            rows={3}
+                            value={this.state.reservation.specialRequests}
+                            onChange={(e) => this.handleInput(e, 'specialRequests')}
+                        />
                     </Form.Group>
                     <Button variant="primary" type="submit">
                         Submit Reservation
