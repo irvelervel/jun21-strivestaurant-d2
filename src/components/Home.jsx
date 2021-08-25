@@ -2,6 +2,7 @@ import { Carousel, Col, Container, Row } from 'react-bootstrap'
 import dishes from '../data/menu.json'
 import { Component } from 'react'
 import DishComments from './DishComments'
+import ReservationForm from './ReservationForm'
 // dishes is an array of 5 objects
 // each object is a pasta dish
 // I want to create a carousel slide for each pasta dish
@@ -31,6 +32,11 @@ class Home extends Component {
                 {/* this is called a react fragment, useful for wrapping multiple elements */}
                 {/* out of the return statement of a react component */}
                 <Container>
+                    <Row className="mt-3 justify-content-center">
+                        <Col xs={12} md={6}>
+                            <ReservationForm />
+                        </Col>
+                    </Row>
                     <Row className="mt-3 justify-content-center">
                         <Col xs={12} md={6}>
                             <Carousel>
@@ -63,7 +69,7 @@ class Home extends Component {
                             </Carousel>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className="mt-5 justify-content-center">
                         <DishComments dish={this.state.selectedDish} />
                         {/* we want to bind our interface to the state */}
                         {/* because we're not going to manipulate the DOM anymore */}
