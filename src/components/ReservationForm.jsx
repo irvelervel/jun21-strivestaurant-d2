@@ -45,11 +45,88 @@ class ReservationForm extends Component {
         })
     }
 
+    // handleSubmit = (e) => { // with chained thens
+    //     e.preventDefault()
+    //     console.log(this.state.reservation)
+
+    //     try {
+    //         // the place for every operation that might fail outside of your control
+    //         fetch("https://striveschool-api.herokuapp.com/api/reservation", {
+    //             method: 'POST',
+    //             body: JSON.stringify(this.state.reservation),
+    //             headers: {
+    //                 'Content-type': 'application/json'
+    //             }
+    //         })
+    //             .then(response => {
+    //                 if (response.ok) {
+    //                     // reservation saved!
+    //                     alert('your reservation was saved correctly!')
+    //                     this.setState({
+    //                         reservation: {
+    //                             name: '',
+    //                             phone: '',
+    //                             numberOfPeople: 1,
+    //                             smoking: false,
+    //                             dateTime: '',
+    //                             specialRequests: ''
+    //                         }
+    //                     })
+    //                 } else {
+    //                     alert('your reservation was NOT saved correctly!')
+    //                 }
+    //             })
+    //             .catch(error => {
+    //                 console.log(error)
+    //             })
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+    handleSubmit = async (e) => { // with async/await
+        e.preventDefault()
+        console.log(this.state.reservation)
+
+        try {
+            // the place for every operation that might fail outside of your control
+
+            let response = await fetch("https://striveschool-api.herokuapp.com/api/reservation", {
+                method: 'POST',
+                body: JSON.stringify(this.state.reservation),
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+
+            if (response.ok) {
+                // reservation saved!
+                alert('your reservation was saved correctly!')
+
+                // this is for resetting the form to its initial state
+                this.setState({
+                    reservation: {
+                        name: '',
+                        phone: '',
+                        numberOfPeople: 1,
+                        smoking: false,
+                        dateTime: '',
+                        specialRequests: ''
+                    }
+                })
+            } else {
+                alert('your reservation was NOT saved correctly!')
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     render() {
         return (
             <div className="text-center">
                 <h2>MAKE A RESERVATION :)</h2>
-                <Form>
+                <Form onSubmit={this.handleSubmit}>
                     <Form.Group>
                         <Form.Label>Your name?</Form.Label>
                         <Form.Control
@@ -89,8 +166,10 @@ class ReservationForm extends Component {
                         <Form.Check
                             type="checkbox"
                             label="Do you smoke?"
-                            checked={this.state.reservation.smoking}
+                            checked={this.state.reservation.smoking} // true or false
                             onChange={(e) => this.handleInput(e, 'smoking')}
+                        // the value property here has two possible values
+                        // "on" and "off"
                         />
                     </Form.Group>
                     <Form.Group>
